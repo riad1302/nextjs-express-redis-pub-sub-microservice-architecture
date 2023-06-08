@@ -1,0 +1,98 @@
+version: '3'
+
+services:
+  client-next-app:
+    container_name: "client-next-app"
+    build:
+      context: client-app
+      dockerfile: dockerfile
+    ports:
+      - '${CLIENT_APP_PORT:-3000}:3000'
+    networks:
+      - mynetwork
+    depends_on:
+      - redis
+      - db
+      - api-express-server
+      - worker-express-server
+#    volumes:
+#      - ./client-app/:/app
+#      - /app/node_modules
+
+  api-express-server:
+    container_name: "api-express-server"
+    build:
+      context: api-server
+      dockerfile: dockerfile
+    environment:
+      - PORT=5002
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_CHANNEL=${REDIS_CHANNEL}
+      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USERNAME=${MYSQL_USERNAME}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_TABLE=${MYSQL_TABLE}
+    ports:
+      - '${API_EXPRESS_PORT:-5001}:5001'
+    networks:
+      - mynetwork
+    depends_on:
+      - db
+      - redis
+      - worker-server
+    volumes:
+      - ./api-server/:/app
+      - /app/node_modules
+
+  worker-express-server:
+    container_name: "worker-express-server"
+    build:
+      context: worker-server
+      dockerfile: dockerfile
+    environment:
+      - PORT=5002
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_CHANNEL=${REDIS_CHANNEL}
+      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USERNAME=${MYSQL_USERNAME}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_TABLE=${MYSQL_TABLE}
+    networks:
+      - mynetwork
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./worker-server/:/app
+#
+  db:
+    container_name: "mysql-db-server"
+    build:
+      context: db
+      dockerfile: dockerfile
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    # ports:
+    #   - '3306:3306'
+    networks:
+      - mynetwork
+
+  redis:
+    container_name: "redis-new-service"
+    image: "redis:latest"
+#    restart: always
+    command: redis-server --save 20 1 --loglevel warning --requirepass mypassword
+    # ports:
+    #   - '6379:6379'
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge

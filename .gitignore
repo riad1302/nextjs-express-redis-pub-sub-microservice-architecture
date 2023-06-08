@@ -1,0 +1,4 @@
+/api-server/node_modules
+/worker-server/node_modules
+/client-app/node_modules
+.env

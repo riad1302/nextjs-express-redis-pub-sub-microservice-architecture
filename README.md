@@ -17,7 +17,7 @@ Explanation:
 
 1. The worker server is a microservice that subscribes to the redis pub/sub and receives messages from the express api server when a post request is made from the nextjs client. It is responsible for sending requests to the mysql database to store the data.
 
-##Tools & Tech stack used:
+## Tools & Tech stack used:
 
 1. Frontend Nextjs
 1. Backend For APi Express
@@ -25,7 +25,7 @@ Explanation:
 1. Redis Cache and Pub/Sub
 1. MySQL Database
 
-##Following is a demonstration of the system:
+## Following is a demonstration of the system:
 
 <figure >
 <p align="center">
@@ -34,7 +34,7 @@ Explanation:
 </p>
 </figure>
 
-##Project installation instruction
+## Project installation instruction
 
 - git clone https://github.com/riad1302/nextjs-express-redis-pub-sub-microservice-architecture
 - Navigate to `cd nextjs-express-redis-pub-sub-microservice-architecture` folder

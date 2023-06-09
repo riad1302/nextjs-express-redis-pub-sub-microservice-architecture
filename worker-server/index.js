@@ -1,19 +1,42 @@
 "use strict";
 import dotenv from "dotenv";
 import { createClient } from "redis";
-import { pool } from "../config/mysqlDB.js";
+import mysql from "mysql2/promise";
+import { pool } from "./src/config/mysqlDB.js";
 
 dotenv.config();
 
+// redis
+const redisUsername = process.env.REDIS_USERNAME || "";
+const redisPassword = process.env.REDIS_PASSWORD || "";
+const redisHost = process.env.REDIS_HOST || "";
+const redisPort = process.env.REDIS_PORT || "";
+const redisChannel = process.env.REDIS_CHANNEL || "";
 
+// mysql
+const sqlHost = process.env.MYSQL_HOST || "";
+const sqlUser = process.env.MYSQL_USERNAME || "";
+const sqlPassword = process.env.MYSQL_PASSWORD || "";
+const sqlDatabase = process.env.MYSQL_DATABASE || "";
+const sqlTable = process.env.MYSQL_TABLE || "";
+
+// configs
+const redisUrl = `redis://${redisUsername}:${redisPassword}@${redisHost}:${redisPort}`;
+const dbConfig = {
+    host: sqlHost,
+    user: sqlUser,
+    password: sqlPassword,
+    database: sqlDatabase,
+};
 
 // helper fn for DB
-const createData = async (data) => {
-    // const sqlQuery = `INSERT INTO ${sqlTable} (data) VALUES ('${data}')`;
-    // const sqlConnection = await mysql.createConnection(pool);
+const createData = async (input) => {
+    console.log('worker server')
+    //const data = JSON.parse(input)
+    // const sqlQuery = `INSERT INTO ${sqlTable} (title) VALUES ('${data}')`;
+    // const sqlConnection = await mysql.createConnection(dbConfig);
     // return sqlConnection.execute(sqlQuery);
-    return await pool.query(`INSERT INTO ${sqlTable} (data) VALUES ('${data}')`);
-
+    return await pool.query(`INSERT INTO posts (title, description, created_at) VALUES ('${data.title}', '${data.description}', '${data.created_at}')`);
 };
 
 (function () {

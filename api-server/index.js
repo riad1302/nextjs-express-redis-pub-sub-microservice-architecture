@@ -11,14 +11,11 @@ const expressPort = 5001;
 //express
 const app = express();
 app.use(cors());
-
-// Routes
-
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 // Routes
 app.use("/api", postRoutes);
-//app.use(postRoutes);
-
 
 app.listen(expressPort, () => console.log(`served on port ${expressPort}`));
 

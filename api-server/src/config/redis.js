@@ -8,3 +8,7 @@ const redisPort = process.env.REDIS_PORT || "";
 const redisChannel = process.env.REDIS_CHANNEL || "";
 
 const redisUrl = `redis://${redisUsername}:${redisPassword}@${redisHost}:${redisPort}`;
+
+export const redisClient = createClient({ url: redisUrl });
+
+

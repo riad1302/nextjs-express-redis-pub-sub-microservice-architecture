@@ -13,6 +13,17 @@ export const readPost = async (req, res) => {
 
 export const createPost = async (req, res) => {
     console.log('hello');
+    const data  = req.body;
+    console.log(data)
+    console.log(req)
+    // try {
+    //     if (!data) throw new Error("missing data");
+    //     await pool.query(`INSERT INTO posts (title, description, created_at) VALUES ('${data.title}', '${data.description}', '${data.created_at}')`);
+    //     res.status(200).json({ message: "success" });
+    // } catch (error) {
+    //     console.log({ error });
+    //     res.status(500).json({ message: "failure", error });
+    // }
     // if (!req.body.firstName || !req.body.lastName || !req.body.email) {
     //     return res.status(422).json({
     //         firstName: "firstname is required",

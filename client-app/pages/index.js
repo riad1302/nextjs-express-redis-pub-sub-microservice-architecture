@@ -3,10 +3,12 @@ import axios from "axios";
 
 export default function Home() {
   const [value, updateValue] = useState("create new data");
-  const [input, setInput] = useState("");
+  const [description, setDescription] = useState("");
+  const [title, setTitle] = useState("");
+  const [date, setDate] = useState("");
   const baseUrl = "http://localhost:5003";
   const getDataUrl = `${baseUrl}/api/post`;
-  const createDataUrl = `${baseUrl}/create`;
+  const createDataUrl = `${baseUrl}/api/post`;
 
   const getData = async () => {
     try {
@@ -19,9 +21,9 @@ export default function Home() {
     }
   };
 
-  const createData = async (inputText) => {
+  const createData = async (titleText, descriptionText, dateText) => {
     try {
-      const { data } = await axios.post(createDataUrl, { data: inputText });
+      const { data } = await axios.post(createDataUrl, { title: titleText, description: descriptionText, created_at: dateText });
       console.log({ message: "posted data", data });
       return data;
     } catch (error) {
@@ -31,8 +33,10 @@ export default function Home() {
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
-    await createData(input);
-    setInput("");
+    await createData(title, description, date);
+    setDescription("");
+    setTitle("");
+    setDate("");
   };
 
   return (
@@ -40,9 +44,19 @@ export default function Home() {
       <section style={{ zoom: "1.2", display: "grid", placeItems: "center" }}>
         <form onSubmit={handleSubmit}>
           <input
+              type="text"
+              value={title}
+              onChange={(evt) => setTitle(evt.target.value)}
+          />
+          <input
             type="text"
-            value={input}
-            onChange={(evt) => setInput(evt.target.value)}
+            value={description}
+            onChange={(evt) => setDescription(evt.target.value)}
+          />
+          <input
+              type="date"
+              value={date}
+              onChange={(evt) => setDate(evt.target.value)}
           />
           <input type="submit" value="create data" />
         </form>

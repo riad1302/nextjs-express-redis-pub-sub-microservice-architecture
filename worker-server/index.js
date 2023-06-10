@@ -32,7 +32,7 @@ const dbConfig = {
 // helper fn for DB
 const createData = async (input) => {
     console.log('worker server')
-    //const data = JSON.parse(input)
+    const data = JSON.parse(input)
     // const sqlQuery = `INSERT INTO ${sqlTable} (title) VALUES ('${data}')`;
     // const sqlConnection = await mysql.createConnection(dbConfig);
     // return sqlConnection.execute(sqlQuery);

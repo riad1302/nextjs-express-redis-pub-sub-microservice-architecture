@@ -42,9 +42,9 @@ export const readPost = async (req, res) => {
             // ending the fn
             return;
         }
-        const [rows] = await pool.query("SELECT * FROM posts");
-        await setRedisCache(rows);
-        res.status(200).json({ message: "success", isCached: "no", rows });
+        const [data] = await pool.query("SELECT * FROM posts");
+        await setRedisCache(data);
+        res.status(200).json({ message: "success", isCached: "no", data });
     } catch (error){
         res.json(error);
     }
